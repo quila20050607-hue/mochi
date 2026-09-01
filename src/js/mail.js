@@ -748,7 +748,7 @@
       return { textN: p.text.length, defTextN: p.defText.length, defKaoN: p.defKaomoji.length, defEmojiN: p.defEmoji.length };
     } catch (e) { return null; }
   };
-  // TA 写信内容：多个字卡（空格分隔）+ 概率加颜文字/emoji/表情包
+  // TA 写信内容：多个字卡（每张一行）+ 概率加颜文字/emoji/表情包
   function taLetterContent(cfg, cid) {
     const pool = mailCardPool(cid);
     const hasCustom = pool.text.length > 0;
@@ -771,12 +771,15 @@
       }
       parts.push(words[Math.floor(Math.random() * words.length)]);
     }
-    let t = parts.join(' ');
+    // v3.26.x：一卡一行——原先用空格拼接，20~50 张字卡糊成一大段没有断句，
+    //   信纸 .mail-paper-body 已是 white-space:pre-wrap，改成换行即可每张卡独占一行。
+    //   列表摘要 shortDesc 内有 /\s+/g→' ' 折行，摘要显示不受影响。
+    let t = parts.join('\n');
     // 颜文字/emoji 附加：自定义对应分类为空时回退默认池（保持原补池行为）
     const kp = pool.kaomoji.length ? pool.kaomoji : pool.defKaomoji;
     const ep = pool.emoji.length ? pool.emoji : pool.defEmoji;
-    if (cfg.kaomojiEn && kp.length && Math.random() * 100 < 30) t += ' ' + kp[Math.floor(Math.random() * kp.length)];
-    if (cfg.emojiEn && ep.length && Math.random() * 100 < 15) t += ' ' + ep[Math.floor(Math.random() * ep.length)];
+    if (cfg.kaomojiEn && kp.length && Math.random() * 100 < 30) t += '\n' + kp[Math.floor(Math.random() * kp.length)];
+    if (cfg.emojiEn && ep.length && Math.random() * 100 < 15) t += '\n' + ep[Math.floor(Math.random() * ep.length)];
     // v3.11.x：只收 dataURL 媒体——信件正文按 sticker:/data:image 正则识别内联图片，
     //   链接导入的 http(s) 字卡拼进信纸只会显示成一段 URL 文字，先过滤掉
     const st = pool.sticker.concat(pool.image).filter(s => typeof s === 'string' && s.indexOf('data:') === 0);
@@ -786,7 +789,7 @@
       //   仓库里的原图先经 shrinkMediaUrl 抽一张压缩版缓存到内存，退化场景才保留原图。
       const orig = st[Math.floor(Math.random() * st.length)];
       const small = (window._shrunkStickerCache && window._shrunkStickerCache[orig]) || orig;
-      t += ' ' + small;
+      t += '\n' + small;
     }
     return t;
   }
