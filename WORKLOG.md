@@ -1,72 +1,10 @@
-# 本次构建者：AI-B（本会话收口：#117 vivo X200s 本地音乐刷新后播放失败，在途 src 已由并行会话先行提交）
-
-### 2026-09-01 19:1x（#117 vivo X200s 本地音乐刷新后播放失败）
-* [AI-B 域·构建者收口]（**改动文件：src/js/music-player.js（本地歌脏值守卫四道）、build.mjs（#117 哨兵）、FIX-REGRESSION.md（#117 行）、WORKLOG.md；构建状态：已构建·sw mochi-mtifymk0，哨兵 194/194、哑哨兵 0、sw.js 3/3、verify 10/10、verify-music-single-audio 15/15；已提交已推送**）。
-* 需求/反馈（用户报障）：vivo X200s（V2458A）+ Edge 151 本地音乐每次刷新后播放失败，必须删掉再重新添加才能听。诊断实证：v3.26.376、点歌瞬间报 `资源加载失败 <audio> https://…/mochi/%7B%7D`（`%7B%7D`=URL 编码 `{}`，即 `audio.src` 被赋成字符串 `'{}'`）、IDB `default:music-file:sm_…=33.0MB`（好文件还在）、交互轨迹点歌→报错→modal-ok（offerRemoveDamagedSong）。
-* 根因（详见 FIX-REGRESSION #117）：历史版本曾把 Blob 经 JSON 序列化（`JSON.stringify(Blob)`→`'{}'`）写进 `music-file` 键，脏值 `'{}'` 常驻 localStorage；本地歌播放链只判「值非空」就 `audio.src = v`，每次刷新同步路径都读到这串脏值喂给 `<audio>` → 解析成站内路径 `/mochi/{}`。删歌重加能听＝重传覆盖了脏值。
-* 修复（music-player.js 四道）：① `plausibleLocalValue()` 形状校验（只认 Blob / ≥10 字符字符串）；② 同步路径读到脏 LS 值只清 LS 副本、继续落 IDB 读权威值（好 Blob 在 IDB 时刷新直接能播）；③ `loadLocal` 确认脏值后 `purgeLocalFile()` 清脏存储（缺失态不动 IDB 防误删好文件）；④ `playLocal` 第二层 `validAudioSrc` 兜底。
-* 在途 src（#115 聊天输入栏/花园工坊/群聊切换/纪念日关系类型）已由并行会话 2014071 先行提交，本包只含 #117 音乐修复及其文档/哨兵/重建产物。
-* 验证：`node build.mjs` → 哨兵 194/194 + 哑哨兵 0 + sw.js 3/3；`node tools/verify.mjs` → 10/10；`node tools/verify-music-single-audio.mjs` → 15/15。
-* 待真机（vivo X200s + Edge）：刷新后直接点本地歌应能播（IDB 好值路径）；脏值歌不再报 `%7B%7D`、自动清脏。
-* 待对方处理：无。
-
-### 2026-09-01 19:0x（桌面纪念日关系类型收口 + 构建者打包全部在途 src）
-* [AI-B 域·构建者收口]（**改动文件：src/js/personalize.js（切换联系人刷新补 syncRelUI）、src/js/data-backup.js（备份识别键补 rel-cat/rel-role）、WORKLOG.md；构建状态：本包构建后一并提交（见下方 sw）**）。
-* 需求/反馈：用户要桌面恋爱纪念日组件可改成不一定是恋爱，设置时可选爱情向/亲情向/友情向，并支持关系称呼（如姐姐/女儿/妈妈/朋友）。**该主体已在 HEAD e0aaed3 由并行会话实现并提交**（personalize.js rel-cat/rel-role + template.html rel-type-row/rel-role-input + 桌面图标切换），本会话核对后补两处：
-  1. **切换联系人未刷新关系类型 UI**（提交版缺）：`updateLove` 在联系人切换块里会重跑，但 `mem-love-label`/关系类型 pills 选中态/桌面图标（deco-heart）不随之刷新，切到别的桌面会残留上一个联系人的类型/称呼。补 `try { syncRelUI(); } catch (e) {}` 到联系人切换刷新块（personalize.js ~5994）。
-  2. **备份识别键**：data-backup.js 导入识别列表补 `rel-cat` / `rel-role`（新键参与 mochi 备份判定）。
-* 一并收口在途 src（均 node --check 过、已保存完整）：#115 聊天输入栏四道加固（base.css will-change + chat.js/device.js 编号改注 + build.mjs 哨兵 + tools/verify-chat-input-guard.mjs）、花园工坊缺料提示（garden.js + garden.css）、群聊三点菜单「切换群聊」（group-chat.js + template.html gc-more-groups）。
-* 验证：`node build.mjs` → 哨兵全绿 + 哑哨兵 0 + sw.js 3/3；`node tools/verify-chat-input-guard.mjs`；`npm run verify`。
-* 待对方处理：无。
-* 待用户确认：push（上一包 e0aaed3 亦未推送，本包合并推送后线上才生效）。
-
-### 2026-09-01 18:4x（#115 红米 K60 至尊版 + Edge 聊天输入栏「打字不显示/空白」四道加固）
-* [AI-B 域 + 跨域 chat.js]（**改动文件：src/css/base.css（常驻 will-change + 注释）、src/js/chat.js（#114→#115 注释编号）、src/js/device.js（同上）、build.mjs（#115 哨兵 10 条：原 #114 编号改注 + 拆出 will-change 独立一条）、FIX-REGRESSION.md（#115 行）、tools/verify-chat-input-guard.mjs（新增验证脚本）、WORKLOG.md；构建状态：未构建（本会话只在 `%TEMP%\mochi-ck114` 隔离副本里 build/verify，仓库 `index.html` / `sw.js` / `version.json` 一律未动，等构建者收口）**）。
-* 需求/反馈（用户报障 + 诊断）：红米 K60 至尊版 + Edge 151（Android 16、406×739 DPR3、v3.26.380）「聊天里输入栏，输入的字不显示，空白，导致无法发送聊天消息」。追问后确认**任意文字都空白**（不只重复短句）。诊断佐证：`键盘/锁残留` 三行全 `n/a`（安卓侧根本没有探针，只读 iOS）、`chat-msgs` 142.6MB、采样 18fps、聚焦元素 `div#chat-input.chat-input`。
-* 跨域改动 src/js/chat.js（按 AGENTS.md 规则先记此条），理由：吞字判据本体在 chat.js 的防复活守卫里，不在我名下无法从别处修。改动只碰 `userEditedAfterClear` 闸门 + 三处守卫加判 + 三个输入活动打点监听，未动业务逻辑。
-* 根因/方案（该机型不可远程复现，按「没进来 / 进来被清 / 进来没画 / 进来滚出视野」四路各堵一处 + 决定性埋点，详见 FIX-REGRESSION #115）：
-  - **A 进来被清（唯一已证实的代码缺陷）**：v3.14 防复活守卫三处判据都是「框内内容 == 刚发送文本」，用户发完短句立刻用输入法**整段上屏**重打同一条（「好的」「在吗」必撞）→ 上屏即被静默清空，正是「打字不显示」。新增 `lastUserEditAt`/`clearAppliedAt`/`userEditedAfterClear()` 真实编辑闸门（keydown / compositionstart / `beforeinput` 的 `insert*` 三类活动打点），无输入活动的内核迟到写回仍照清。
-  - **B 进来没画**：聊天输入栏是模板原生 contenteditable、不走 `ceConvert`，拿不到 `.ce-box` 那套合成层保护；键盘期 `.phone` 被 `syncAndroidKb` 改高 + `_aPanComp` 写 `top`，文字可能画在失效旧层。补 `.phone .chat-input { will-change:transform }`（常驻，不依赖聚焦时机、也不受「文档未获焦点时 `:focus` 不匹配」影响）+ 聚焦再叠 `translateZ(0)`，与治好「文字与框分离」的 `.ta-add .ce-box` 完全同款；`#gc-input` 共用类一并覆盖。
-  - **C 进来滚出视野**：`healEditableScroll()` 把「内容不超高而 scrollTop 残留」归零（多行真滚动不动），挂 input 捕获 + `nudgeInputVisible()`。
-  - **D 埋点**：诊断新增「聊天输入栏现场」行 + 输入轨迹环形缓冲（`__diag-inp`，只记长度/滚动不记内容）+ `window.__mochiAndroidKb()` 并入 `mochiVvDiag().kb`（安卓不再是 `n/a`）。下次同机型报障凭这两行一次定分支，不必再猜。
-* 验证（全部在隔离副本跑，`node build.mjs` → 192/192 哨兵、哑哨兵 0、sw 3/3；`node tools/verify-chat-input-guard.mjs` → 17/17；`npm run verify` → 10/10）：
-  - **双向反向对照已实测**：闸门强制 `return false`（≈修复前）→ ②c/②d FAIL（文本被清空），强制 `return true`（关掉防复活）→ ③b FAIL。为让 ②c 真有牙，测试改走 composition 整段提交——逐键 ASCII 输入第一个字符就走进守卫 else 分支摘掉 `_mClearTxt`，永远测不到吞字判据（这是踩过一次的假绿）。
-  - **哨兵有牙已实测**：删掉 `userEditedAfterClear` 定义行 → 构建 exit 1 并如实报「src 里也没有＝修复真丢了」。
-* 并行状况（重要）：18:32 对方（同标 AI-B）构建提交时已把我这份在途 src 一并打进去（sw `mochi-mtij2jwy`，编号占用 **#114**＝iOS 全屏状态栏重叠），因此本包整体改标 **#115**。**当前仍未提交的增量**只有四处：`src/css/base.css` 的 `will-change:transform` 一行 + 注释、`build.mjs` 的 #115 编号与拆出的合成层哨兵、`tools/verify-chat-input-guard.mjs`、`FIX-REGRESSION.md` #115 行；`src/js/mobile-adapt.js` 已全量入库（工作区干净）。
-* 待真机验收（红米 K60 至尊版 + Edge）：输入栏打字应正常显示、可发送；若仍空白请再发一次诊断信息，按「输入轨迹」`n` 与「聊天输入栏现场」的 `文本长`/`transform` 判分支（`n` 恒 0＝没进来；涨过又掉回 0＝进来被清；文本长>0 且已提升＝没画，需换 `-webkit-backface-visibility` 等手法）。
-* 顺带记录两个未开工的疑点（本次未动）：① `default:chat-msgs` 142.6MB 的读取路径（`idbRestore` 冷启动整包回填会不会才是 18fps/输入无响应的元凶，需要单独量）；② 诊断里 `cs-voice-send：LS="1" 读取=缺失` 开关持久化体检不一致。
-* 待对方处理：本包需构建者收口（`node build.mjs` + 上述两条 verify 全绿后与 src 同一次提交）。临时脚本已删。
-
-### 2026-09-01 18:3x（构建者收口：#113/#114 iOS 全屏修复 + 全屏模式功能说明 + 对方在途改动）
-* [AI-B 域·构建者收口]（**改动文件：src/css/base.css（#114）、src/js/fullscreen.js（功能说明+文案）、src/template.html（功能说明区块）、src/css/setting.css（功能说明标签样式）、src/js/device.js（#113）、build.mjs（#113 哨兵 needle 修正 + #114 哨兵）、FIX-REGRESSION.md（#114 行）、WORKLOG.md、产物 index.html / sw.js / version.json；构建状态：已构建·sw mochi-mtij2jwy（18:32），哨兵 191/191、哑哨兵 0、sw.js 3/3、verify 10/10；已提交未推送**）。
-* 需求/反馈：iPhone 12 Pro Max Chrome 手动开【全屏模式】无法隐藏系统顶部栏（iOS 限制）；主屏幕打开的全屏态下桌面顶部「Mochi/时间/电量」一行与 iPhone 系统状态栏重叠；底部输入栏贴底/被遮挡疑虑；用户要求给全屏模式新增功能说明、写清 iOS 限制。
-* 根因/方案：
-  - #114（base.css）：窄屏 @media 的 `.statusbar` safe-area 顶部留白（特异性 0,1,0）被**后加载同特异性**全局 `.statusbar { padding:4px 4px 12px }` 覆盖失效 → 全屏态模拟状态栏内容顶到 y=0 与系统状态栏重叠。修复：新增 `html.ios-fs-active .phone .statusbar { padding-top:max(calc(14px + env(safe-area-inset-top,0px)),14px) }`（0,2,1 提权），全屏态恢复安全区留白、模拟栏整体下移到系统状态栏下方成两栏不重叠（承接 #111 保留状态栏）。探针实测 padTop 4px→14px（真机 safe≈47px 时为 61px）。
-  - 全屏模式功能说明：template.html 全屏开关行加「功能说明」标签（点击弹 showIosGuide 三态说明）+ 行下 .gs-sub 内联说明；fullscreen.js relabelIosToggle 改选内层 span 防覆盖标签；文案按现状改写（standalone 全屏=内容顶满、模拟状态栏下移不隐藏；iOS 系统状态栏任何网页无法隐藏）。
-  - 底部输入栏：探针 standalone+ios-fs-active 态实测 `.phone` 底=879、`.chat-input-row` 底=879、gapBottom=0，且手机端通栏贴底规则带 safe-bottom 内边距（真机 home indicator 区 44px 预留），无遮挡。verify 10/10 含「聊天输入栏贴底」。
-  - #113（device.js）哨兵 needle 原只在 `//` 注释里、压缩后必丢（哑哨兵），改为真实代码特征 `exportTxt(c ? c.text() : cur)`。
-* 一并收口对方（AI-A）在途 src（均 node --check 过、已保存完整）：src/js/group-chat.js（多群聊分组）、src/js/music-player.js（本地歌脏值兜底）、src/js/personalize.js（纪念日关系类型/称呼）、src/js/mobile-adapt.js + src/js/chat.js（安卓输入栏吞字修复：editable 内部滚动自愈 + 发送守卫只挡内核迟到写回）。
-* 验证：哨兵 191/191、哑哨兵 0、sw.js 3/3、npm run verify 10/10；探针 tmp-fs.mjs 确认状态栏 padTop=14px（无重叠）、输入栏贴底 gapBottom=0。
-* 待真机（iPhone 12PM）：主屏幕全屏态顶部「Mochi/时间/电量」一行应显示在系统状态栏正下方、不重叠；底部输入栏贴底不被 home indicator 遮挡；设置页全屏模式显示功能说明。
-* 待对方处理：无。push 需网络恢复后由用户确认执行。
-
-### 2026-09-01 18:1x（【花园·工坊】做不了花艺配方——排查结论：链路无 bug，体验断层三处，需要 AI-A 处理）
-* [AI-B 域·诊断，未改 garden.js]（**改动文件：无 src 改动；临时探针 tools/tmp-craft-probe.mjs 用完即删；构建状态：不适用**）。
-* 需求/反馈：用户反馈花园【工坊】做不了花艺配方的花。
-* 排查（headless Chrome 390×844 实测 + 逐段读 garden.js）：合成主链路**功能正常**——进花园 → 工坊 tab → 材料够的配方卡出现「合成花束」按钮（can 类），点击扣料、bouquetCnt+1、写日志、chatSendFlower 发到聊天，全通。 recipeCount=24、canCards 按库存正确、localStorage 落盘正确。
-* 用户「做不了」的三处真实断层（都在 AI-A 域 garden.js，请对方定夺）：
-  1. **材料不够的配方不渲染按钮也不给原因**：renderCraft（约 1101-1138 行）只对 canMake 的卡输出「合成花束」按钮，缺材料的卡只有需求行「🌹×3 🌼×2」+花语，没有任何「还缺 ×N / 材料不足」提示；花朵库存若为空（garden-inv-empty 文案「库存空空，收获花朵后可制作花束送给TA」），工坊侧完全无感。用户看不出是"材料不够"还是"功能坏了"。
-  2. **配方需求只显示花名不显示持有数**：needTxt 只拼 `emoji×数量`（需求量），不显示「已有 ×N」，无法对照缺多少。
-  3. **「奇迹」配方（flameRose×1+blueRose×1）标的稀有花是花不是种子，且不可直接获得**：合成只扣 data.inv（花朵库存），而稀有花只能经 data.rareInv（种子，收获掉落5%/杂交产出/TA留下3%）种出来再收获进 inv——理论可做但概率极低（flameRose 还要 rose×sakura 杂交成功才给种子），用户视角近似"永远做不了"。若属预期设计，建议至少在配方卡标注获取途径。
-* 另注意：工坊「杂交配方」区显示的"已合成/未发现"读 data.hybridFound，与花束合成无关（那是图鉴发现），文案「合成」二字易混。
-* 待对方处理：以上 1/2 建议补 UI 反馈（缺料提示+已有数量），3 需产品定夺（标注来源或改配方材料）。构建/线上无需变更（无修复代码）。
-
-### 2026-09-01 16:0x（#113 诊断信息打开弹输入法又收起致灰屏 + 取消自动复制）
-* [AI-B 域]（**改动文件：src/js/device.js、build.mjs（新增 #113 哨兵 1 条）、FIX-REGRESSION.md（#113 行）、WORKLOG.md；构建状态：未构建，仅 src 已改 + node --check 过，待构建者收口**）。
-* 需求/反馈：用户在设置页打开【诊断信息】，手机输入法弹起又收起、并出现灰屏；且诊断无需自动复制（手机剪贴板有字数上限，自动写长文本会被静默截断）。
-* 根因：诊断弹窗**打开即自动复制**——`copyText()` 临时建隐藏 textarea 并 `ta.focus()`（触发射过 #键盘），800ms 后随元素移除又收起 → 手机上即「输入法弹起→收起 + 灰屏」。
-* 方案：取消自动复制（删除 `autoCopy` 函数与终态 `copied` 判定），打开只读文本不再碰剪贴板、不再 focus textarea；需要发给开发者时由用户点【复制】/【导出txt】自行触发（导出 txt 不受字数上限影响）。手动【复制】按钮保留。
-* 验证：`node --check src/js/device.js` 过；哨兵 needle `打开诊断就自动写长文本会被静默截断` 在 device.js 唯一。需构建后跑哨兵 + 真机验收（打开诊断不再弹输入法/无灰屏、正文照常更新）。
+# 本次构建者：AI-B
+### 2026-09-01 18:2x（#113 信箱写信一卡一行）
+* [AI-A 域·由 AI-B 代构建]（**改动文件：src/js/mail.js、build.mjs（#113 哨兵 1 条）、FIX-REGRESSION.md（#113 行）、WORKLOG.md、产物 index.html / sw.js / version.json / manifest.json / icon-*.png / notice.json；构建状态：已构建·sw mochi-mtiiqa7z（18:22）、APP_VERSION v3.26.381，哨兵 181/181、哑哨兵 0、sw.js 3/3；未提交未推送**）。
+* 需求/反馈：用户反馈信箱写信时全部字卡挤在一起，希望一个字卡单独占一行。
+* 根因：mail.js taLetterContent 抽 20~50 张字卡后用空格拼接（parts.join 空格），附加颜文字/emoji/表情包也用空格追加 → 几十张卡首尾相连成一整段。
+* 方案：四处分隔符改换行（parts.join 换行 + kaomoji/emoji/sticker 三处 t += 换行）。信纸 .mail-paper-body 本就 white-space:pre-wrap，CSS 不改；列表摘要 shortDesc 有 /\s+/g→空格 折行，摘要不受影响。
+* 验证：node --check src/js/mail.js 过；node build.mjs 退出码 0，哨兵 181/181 全绿、哑哨兵 0 条、sw.js 3/3。⚠️ 构建环境无 git（zip 快照），APP_VERSION 自动计数失效，本次手动指定 v3.26.381（= 上一版 380 +1）；构建者在本地 git 环境重跑时会自动取正确提交数，无需保留该手改。npm run verify 系列未跑（本环境无 Playwright/Chrome），本改动纯 JS 字符串拼接、不涉布局。
 * 待对方处理：无。
 
 ### 2026-09-01 15:0x（构建者收口：#110/#111/#112 iOS 顶部遮挡三连修复 + 对方 cjian 串桌修复 / p2-features 今天优先 一并构建提交推送）
