@@ -380,8 +380,6 @@ padding-bottom: calc(10px + var(--mochi-safe-bottom,env(safe-area-inset-bottom,0
 .phone .page.full .chat-head { padding-top: calc(10px + env(safe-area-inset-top, 0px)); }
 .phone .page.full { padding-bottom: 0; }
 #page-chat { background: var(--page-bg-grad); }
-.phone .chat-input { will-change:transform; }
-.phone .chat-input:focus { transform: translateZ(0); }
 }
 @media (display-mode: fullscreen) {
 .phone .page.full .chat-head { padding-top: max(env(safe-area-inset-top, 0px), 12px); }
@@ -401,7 +399,6 @@ html.ios-native-fs .phone .page.full .stats-top-name { padding-top: 10px; }
 .ios-fs-active .phone .page.full .card-tabs,
 .ios-fs-active .phone .page.full .div-h-title,
 .ios-fs-active .phone .page.full .stats-top-name { padding-top: 10px; }
-html.ios-fs-active .phone .statusbar { padding-top:max(calc(14px + env(safe-area-inset-top, 0px)), 14px); }
 @media (max-width: 900px) {
 .fs-css-active .phone { padding-top: max(env(safe-area-inset-top, 0px), 12px); }
 }
@@ -6392,32 +6389,6 @@ display: flex; align-items: center; justify-content: center; overflow: hidden; f
 .gc-at-av img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; }
 .gc-at-av svg { width: 60%; height: 60%; }
 .gc-at-item span { font-size: 14px; }
-.gc-gp-item { cursor: pointer; }
-.gc-gp-item.cur { background: rgba(0,0,0,.03); }
-.gc-gp-item:active { background: #f4f4f4; }
-.gc-gp-ico svg { width: 19px; height: 19px; }
-.gc-gp-ico.add svg { color: #e8833a; }
-.gc-gp-cur { background: #e8f7ee !important; color: #0a7d3c !important; }
-.gc-gp-del, .gc-mp-rm { font-size: 11px; padding: 4px 9px; }
-.gc-gp-new { cursor: pointer; }
-.gc-gp-new:active { background: #f6f6f6; }
-.gc-gp-new .gc-mp-name { color: #e8833a; font-weight: 600; }
-.gc-mp-add { padding: 10px 16px; border-top: 1px solid rgba(0,0,0,.06); }
-.gc-mp-add button { width: 100%; }
-.gc-gpick-sub { padding: 10px 16px 2px; font-size: 12px; color: #999; }
-.gc-gpick-item { cursor: pointer; }
-.gc-gpick-item:active { background: #f4f4f4; }
-.gc-gpick-item input[type="checkbox"] {
-width: 16px; height: 16px; flex-shrink: 0; margin: 0;
-accent-color: #3a8ee6; cursor: pointer;
-}
-.gc-gpick-empty { padding: 28px 16px; text-align: center; font-size: 13px; color: #999; }
-.gc-gpick-ops {
-display: flex; gap: 10px; padding: 10px 16px;
-border-top: 1px solid rgba(0,0,0,.06);
-}
-.gc-gpick-ops .gc-set-btn { flex: 1; padding: 9px 0; text-align: center; }
-.gc-gpick-ops .gc-gpick-ok { font-weight: 600; }
 .set-title { font-size:22px; font-weight:700; padding:4px 2px 16px; letter-spacing:1px; }
 .set-group { border-radius:20px; overflow:hidden; margin-bottom:12px; }
 .cg-title { display:flex; align-items:center; gap:7px; margin:16px 6px 7px; font-size:11.5px; font-weight:600; color:var(--muted,#999); letter-spacing:.6px; }
@@ -6476,14 +6447,6 @@ font-size:13px;
 }
 .gs-row:last-child { border-bottom:none; }
 .gs-sub { font-size:11px; color:var(--muted); padding:0 14px 10px; line-height:1.6; }
-.gs-row .tag {
-display:inline-block; font-size:11px; color:var(--muted); font-weight:400; letter-spacing:.2px;
-border:1px solid rgba(0,0,0,.08); background:rgba(0,0,0,.03); border-radius:9px; padding:2px 9px;
-cursor:pointer; line-height:1.4; white-space:nowrap;
-}
-.gs-row .tag:hover, .gs-row .tag:focus-visible { background:rgba(0,0,0,.06); border-color:rgba(0,0,0,.12); outline:none; }
-[data-theme="dark"] .gs-row .tag { color:#aaa; border-color:rgba(255,255,255,.14); background:rgba(255,255,255,.06); }
-[data-theme="dark"] .gs-row .tag:hover, [data-theme="dark"] .gs-row .tag:focus-visible { background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.2); }
 .stepper { display:flex; align-items:center; gap:6px; }
 .stp-min, .stp-max {
 width:36px; height:36px; border-radius:11px; border:none; cursor:pointer;
@@ -7668,9 +7631,6 @@ border: none; background: #e85a8f; color: #fff; font-size: 12px; font-weight: 60
 cursor: pointer; font-family: inherit;
 }
 .recipe-btn:active { opacity: .8; }
-.recipe-btn[disabled] { opacity: .5; cursor: default; }
-.recipe-need .rq.short { color: #e0524f; font-weight: 700; letter-spacing: 0; }
-.recipe-lack { font-size: 11px; color: #e0524f; margin: -2px 0 4px; }
 .garden-report { margin: 0 18px 18px; }
 .garden-report-card {
 padding: 18px 16px; border-radius: 18px;
@@ -8588,9 +8548,9 @@ transition-duration: .01ms !important;
     <!-- v3.8.y：底部统一装进一个卡片框（版本/加载/提示/按钮成一整体，与顶部品牌卡片呼应） -->
     <div class="splash-footcard">
       <!-- v3.8.y：底部版本块——两行：名称+版本 / 部署时间+实时秒数（实时秒写入 #splash-ver-live） -->
-      <div class="splash-ver" id="splash-ver" data-build-ts="1788261188844">
-        <span class="sv-app">Mochi 字卡传讯 <b>v3.26.383</b></span>
-        <span class="sv-deploy">部署于 2026-09-01 19:13<span id="splash-ver-live"></span></span>
+      <div class="splash-ver" id="splash-ver" data-build-ts="1788258148415">
+        <span class="sv-app">Mochi 字卡传讯 <b>v3.26.381</b></span>
+        <span class="sv-deploy">部署于 2026-09-01 18:22<span id="splash-ver-live"></span></span>
       </div>
       <!-- v3.5.120：数据（IndexedDB 回填）加载完成前不显示「点击进入」按钮，
            只显示加载提示；就绪后按钮才出现（clock.js 控制显隐） -->
@@ -8644,7 +8604,7 @@ transition-duration: .01ms !important;
             <div class="ring"><svg viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.5-6 8-6s8 2 8 6"/></svg></div>
             <span class="lbl" id="lbl-partner" title="点击修改昵称">TA</span>
           </div>
-          <span class="deco-heart" id="deco-heart"><svg viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7.5-4.7-9.3-9A5.3 5.3 0 0112 6.4a5.3 5.3 0 019.3 5.6c-1.8 4.3-9.3 9-9.3 9z"/></svg></span>
+          <span class="deco-heart"><svg viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7.5-4.7-9.3-9A5.3 5.3 0 0112 6.4a5.3 5.3 0 019.3 5.6c-1.8 4.3-9.3 9-9.3 9z"/></svg></span>
           <div class="deco-avatar" id="avatar-user" title="设置「我」的头像">
             <div class="ring"><svg viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.5-6 8-6s8 2 8 6"/></svg></div>
             <span class="lbl" id="lbl-user" title="点击修改昵称">我</span>
@@ -9626,10 +9586,7 @@ transition-duration: .01ms !important;
       <div class="set-group glass">
         <div class="gs-row"><span>后台保活</span><label class="toggle"><input type="checkbox" id="bg-keepalive"><span class="tk"></span></label></div>
         <div class="gs-row"><span>后台通知</span><label class="toggle"><input type="checkbox" id="bg-notify"><span class="tk"></span></label><button class="bg-notify-test" id="bg-notify-test">测试</button></div>
-        <div class="gs-row"><span style="display:flex;align-items:center;gap:6px;flex:1;min-width:0;"><span>全屏模式（隐藏手机状态栏）</span><span class="tag" id="sf-fullscreen-help" role="button" tabindex="0" aria-haspopup="dialog">功能说明</span></span><label class="toggle"><input type="checkbox" id="sf-fullscreen"><span class="tk"></span></label></div>
-        <!-- v3.26.x：全屏模式功能说明——iOS 系统状态栏（时间/电量）由系统控制、任何网页都无法隐藏，
-             点「功能说明」标签弹详细说明（fullscreen.js sf-fullscreen-help 绑定 showIosGuide） -->
-        <div class="gs-sub" id="sf-fullscreen-sub">开启后尽量隐藏手机顶部状态栏/浏览器栏，让内容占满全屏。<br>iOS 限制：iPhone 顶部系统状态栏（时间/电量）由系统控制，任何网页都无法隐藏；从主屏幕打开时本开关会让内容顶满屏幕，应用内模拟状态栏（Mochi/时间/电量）下移到系统状态栏正下方、两栏不重叠。</div>
+        <div class="gs-row"><span>全屏模式（隐藏手机状态栏）</span><label class="toggle"><input type="checkbox" id="sf-fullscreen"><span class="tk"></span></label></div>
         <!-- v3.26.x：布局手动兜底——浏览器「桌面版网站」模式会把 UA / screen / 触摸能力 /
              视口整套伪装成桌面，指纹识别必有漏网（vivo Y35 + Edge 连栽三轮）。识别失手时
              用户自己掰回来：本开关（或地址栏 ?mobile=1 / ?pc=1），持久存 localStorage，
@@ -9686,7 +9643,7 @@ transition-duration: .01ms !important;
           <div class="txt">清除本地数据</div>
         </div>
       </div>
-      <div class="ver">Mochi 字卡传讯 v3.26.383</div>
+      <div class="ver">Mochi 字卡传讯 v3.26.381</div>
       <div class="ver-credit">原版小红书@言序（1842523578）</div>
       <!-- v3.27.x：设置页底部防骗声明 -->
       <div class="set-alert">
@@ -9926,7 +9883,7 @@ transition-duration: .01ms !important;
             <div class="lic-hero-top">
               <div class="lic-title">Mochi 字卡传讯</div>
               <span class="lic-badge">原版</span>
-              <span class="lic-ver">v3.26.383</span>
+              <span class="lic-ver">v3.26.381</span>
             </div>
             <div class="lic-p">原创极简风情侣聊天模拟器：黑白灰简约设计，数据全部保存在本地、无需联网；所有内容均为代码触发、按概率运行，联系方可主动发送聊天消息。代码从零编写并完全开源——本作即原版。</div>
             <div class="lic-pills">
@@ -10183,7 +10140,7 @@ transition-duration: .01ms !important;
             <summary><span class="lg-num">15</span><span class="lg-name">纪念</span><span class="lg-count">3</span></summary>
             <div class="lg-body">
           <div class="lic-li">桌面【纪念】可设置纪念日和倒数日</div>
-          <div class="lic-li">纪念日显示在桌面顶部双方头像下方（可设恋爱/亲情/友情向，显示相伴天数）</div>
+          <div class="lic-li">恋爱纪念日显示在桌面顶部双方头像下方（我们在一起的天数）</div>
           <div class="lic-li">下一个纪念日倒计时</div>
             </div>
           </details>
@@ -11783,16 +11740,9 @@ transition-duration: .01ms !important;
         <span class="ch-name">纪念</span>
       </div>
       <div class="mem-scroll">
-        <!-- 主纪念日（影响桌面相伴时间/日期；可设爱情/亲情/友情向 + 关系称呼） -->
+        <!-- 恋爱纪念日（影响桌面在一起时间/日期） -->
         <div class="mem-card glass">
-          <div class="mem-card-label" id="mem-love-label">恋爱纪念日</div>
-          <!-- 关系类型：爱情向 / 亲情向 / 友情向 -->
-          <div class="mem-type-row" id="rel-type-row">
-            <button type="button" class="mem-type-pill" data-rel="love">爱情向</button>
-            <button type="button" class="mem-type-pill" data-rel="family">亲情向</button>
-            <button type="button" class="mem-type-pill" data-rel="friend">友情向</button>
-          </div>
-          <input type="text" id="rel-role-input" class="mem-add-input" placeholder="关系称呼（选填）如：姐姐 / 女儿 / 妈妈 / 朋友" maxlength="12">
+          <div class="mem-card-label">恋爱纪念日</div>
           <div class="mem-date-wrap">
             <button type="button" class="mem-date-btn" id="love-date-btn">
               <span class="mem-date-btn-ico" aria-hidden="true">
@@ -12656,8 +12606,8 @@ transition-duration: .01ms !important;
         <span class="ch-back" id="gc-back">
           <svg viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
         </span>
-        <span class="ch-name gc-name" id="gc-name" title="点击切换群聊">群聊</span>
-        <!-- v3.9.x：右上角三点菜单（群成员 / 切换群聊 / 群聊设置） -->
+        <span class="ch-name gc-name" id="gc-name" title="点击查看群成员">群聊</span>
+        <!-- v3.9.x：右上角三点菜单（群成员 / 群聊设置） -->
         <span class="ch-settings gc-more-btn" id="gc-more-btn" title="更多">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg>
         </span>
@@ -12667,11 +12617,6 @@ transition-duration: .01ms !important;
         <div class="gc-more-item" id="gc-more-members">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><circle cx="17" cy="8" r="3.2"/><path d="M3 19c0-3 2.7-5 6-5s6 2 6 5"/><path d="M14 19c0-3 2.7-5 6-5"/></svg>
           <span>群成员</span>
-        </div>
-        <!-- v3.26.x：多群聊分组——切换 / 新建 / 删除群聊 -->
-        <div class="gc-more-item" id="gc-more-groups">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 4v16M15 4v16"/></svg>
-          <span>切换群聊</span>
         </div>
         <div class="gc-more-item" id="gc-more-settings">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33h.01a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51h.01a1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82v.01a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
@@ -12717,27 +12662,6 @@ transition-duration: .01ms !important;
           <button class="gc-mp-close" id="gc-mp-close">✕</button>
         </div>
         <div class="gc-mp-body" id="gc-mp-body"></div>
-      </div>
-      <!-- v3.26.x：群聊列表面板（切换 / 新建 / 删除群聊，复用群成员面板样式） -->
-      <div class="gc-members-panel" id="gc-groups-panel" hidden>
-        <div class="gc-mp-head">
-          <span>切换群聊</span>
-          <button class="gc-mp-close" id="gc-gp-close">✕</button>
-        </div>
-        <div class="gc-mp-body" id="gc-gp-body"></div>
-      </div>
-      <!-- v3.26.x：成员选择面板（新建群聊 / 给当前群加人，复用群成员面板样式） -->
-      <div class="gc-members-panel" id="gc-gpick-panel" hidden>
-        <div class="gc-mp-head">
-          <span id="gc-gpick-title">选择成员</span>
-          <button class="gc-mp-close" id="gc-gpick-close">✕</button>
-        </div>
-        <div class="gc-gpick-sub">勾选联系人，点底部按钮完成</div>
-        <div class="gc-mp-body" id="gc-gpick-body"></div>
-        <div class="gc-gpick-ops">
-          <button class="gc-set-btn" id="gc-gpick-cancel">取消</button>
-          <button class="gc-set-btn gc-gpick-ok" id="gc-gpick-ok">确定</button>
-        </div>
       </div>
       <!-- @提及成员选择面板 -->
       <div class="gc-at-panel" id="gc-at-panel" hidden>
@@ -13470,7 +13394,6 @@ kb: null
 };
 if (pr && vv) out.gapBottom = Math.round(vv.height - pr.bottom);
 try { if (typeof window.__mochiIosKb === 'function') out.kb = window.__mochiIosKb(); } catch (e2) {}
-try { if (!out.kb && typeof window.__mochiAndroidKb === 'function') out.kb = window.__mochiAndroidKb(); } catch (e4) {}
 try { if (typeof window.scrollLockInfo === 'function') out.lock = window.scrollLockInfo(); } catch (e3) {}
 return out;
 } catch (e) { return null; }
@@ -13693,45 +13616,6 @@ if (desc) ringPush(TAP_KEY, { t: Date.now(), x: desc.slice(0, 80) }, 6);
 } catch (e) {}
 }, true);
 } catch (e) {}
-const INP_KEY = 'xy-home-v2:__diag-inp';
-function isDiagTextEl(el) {
-if (!el) return false;
-var tn = el.tagName;
-if (tn === 'INPUT' || tn === 'TEXTAREA') {
-var ty = el.type;
-return !el.readOnly && ty !== 'checkbox' && ty !== 'radio' && ty !== 'range'
-&& ty !== 'file' && ty !== 'color' && ty !== 'hidden';
-}
-return el.isContentEditable === true;
-}
-function diagTextLen(el) {
-try {
-if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') return String(el.value || '').length;
-return String(el.innerText || el.textContent || '').length;
-} catch (e) { return -1; }
-}
-function diagElTag(el) {
-var seg = el.tagName ? String(el.tagName).toLowerCase() : '';
-if (el.id) seg += '#' + el.id;
-else if (typeof el.className === 'string' && el.className) seg += '.' + el.className.split(/\s+/)[0];
-return seg.slice(0, 28);
-}
-function inpPush(k, el) {
-try {
-if (!isDiagTextEl(el)) return;
-ringPush(INP_KEY, {
-t: Date.now(), k: k, x: diagElTag(el), n: diagTextLen(el),
-st: Math.round(el.scrollTop || 0), sh: Math.round(el.scrollHeight || 0),
-ch: Math.round(el.clientHeight || 0)
-}, 8);
-} catch (e) {}
-}
-try {
-document.addEventListener('focusin', function (ev) { inpPush('focus', ev.target); }, true);
-document.addEventListener('compositionstart', function (ev) { inpPush('comp+', ev.target); }, true);
-document.addEventListener('compositionend', function (ev) { inpPush('comp-', ev.target); }, true);
-document.addEventListener('input', function (ev) { inpPush(ev && ev.isComposing ? 'comp' : 'input', ev.target); }, true);
-} catch (e) {}
 function mq(q) { try { return !!(window.matchMedia && window.matchMedia(q).matches); } catch (e) { return false; } }
 function cssSupports(decl) {
 try {
@@ -13896,37 +13780,7 @@ L.push('键盘/锁残留：kbActive=' + (vg.kb ? vg.kb.kbActive : 'n/a')
 + '  html.overflow内联=' + (vg.htmlInlineOverflow || '(空)')
 + '  body.scroll-lock=' + vg.bodyScrollLock
 + '  .phone内联高=' + (vg.phoneInlineH || '(空)') + ' align-self=' + (vg.phoneAlignSelf || '(空)')
-+ '  平移 vv.offsetTop=' + vg.vvOffsetTop + ' docY=' + vg.docScrollY
-+ (vg.kb && vg.kb.closing !== undefined ? '  收起动画期=' + vg.kb.closing : '')
-+ (vg.kb && vg.kb.vvNow !== undefined ? '  当前vv=' + vg.kb.vvNow : '')
-+ (vg.kb && vg.kb.watching !== undefined ? '  轮询=' + (vg.kb.watching ? '跑' : '停') + ' 宽限剩=' + vg.kb.burstLeft + 'ms' : '')
-+ (vg.kb && vg.kb.typosAgo !== undefined ? '  最近键入前=' + vg.kb.typosAgo + 'ms' : '')
-+ '  聚焦元素=' + (vg.kb && vg.kb.focusTag ? vg.kb.focusTag : '(无)'));
-}
-} catch (e) {}
-try {
-let cin = document.getElementById('chat-input');
-if (cin && cin.offsetParent === null) {
-const g = document.getElementById('gc-input');
-if (g && g.offsetParent !== null) cin = g;
-}
-if (!cin) {
-L.push('聊天输入栏现场：未找到 #chat-input');
-} else {
-const cs2 = window.getComputedStyle(cin);
-const r2 = cin.getBoundingClientRect();
-const vv2 = window.visualViewport || null;
-const txt = String(cin.innerText || cin.textContent || '');
-L.push('聊天输入栏现场：元素=' + (cin.id || '?') + '.' + String(cin.className || '').trim().replace(/\s+/g, '.')
-+ '  聚焦=' + (document.activeElement === cin) + '  contenteditable=' + cin.isContentEditable
-+ '  文本长=' + txt.length + '  HTML长=' + String(cin.innerHTML || '').length
-+ '  内部滚动=' + Math.round(cin.scrollTop) + '/' + Math.round(cin.scrollHeight) + '（可视' + Math.round(cin.clientHeight) + '）'
-+ '  颜色=' + cs2.color + '  底色=' + cs2.backgroundColor + '  caret=' + cs2.caretColor
-+ '  opacity=' + cs2.opacity + '  visibility=' + cs2.visibility + '  fontSize=' + cs2.fontSize
-+ '  transform=' + (cs2.transform === 'none' ? '(无独立层)' : '已提升')
-+ '  待清守卫=' + (cin._mClearTxt ? '有(' + String(cin._mClearTxt).length + '字)' : '无')
-+ '  框top/bottom=' + Math.round(r2.top) + '/' + Math.round(r2.bottom)
-+ (vv2 ? '  可视底=' + Math.round(vv2.height) + '  被键盘盖=' + (r2.bottom > vv2.height + 2 ? '是' : '否') : ''));
++ '  平移 vv.offsetTop=' + vg.vvOffsetTop + ' docY=' + vg.docScrollY);
 }
 } catch (e) {}
 L.push('');
@@ -14309,19 +14163,6 @@ L.push('· ' + dt + ' ' + (it.x || '?'));
 L.push('交互轨迹：无');
 }
 } catch (e) { L.push('交互轨迹：读取失败'); }
-try {
-const inps = JSON.parse(localStorage.getItem(INP_KEY) || '[]');
-if (Array.isArray(inps) && inps.length) {
-L.push('输入轨迹 ' + inps.length + ' 条（旧→新，只记长度不记内容）：');
-inps.forEach(function (it) {
-const dt = it.t ? new Date(it.t).toLocaleTimeString() : '?';
-L.push('· ' + dt + ' ' + (it.k || '?') + ' ' + (it.x || '?') + ' n=' + it.n
-+ ' st/sh/ch=' + it.st + '/' + it.sh + '/' + it.ch);
-});
-} else {
-L.push('输入轨迹：无');
-}
-} catch (e) { L.push('输入轨迹：读取失败'); }
 let given = false, terminal = false, terminalGiven = false, dirty = false, updateCb = null, lastTxt = null, tick = null;
 const PLACEHOLDER = /读取中…|获取中…|采样中…/;
 const PLACEHOLDER_G = /读取中…|获取中…|采样中…/g;
@@ -14453,8 +14294,10 @@ else b.style.display = 'none';
 }
 try { refreshBadge(); } catch (e) {}
 try { window.mochiRefreshDiagBadge = refreshBadge; } catch (e) {}
-const TIP_WAIT = '正在读取本机存储明细…（读全后会自动更新）';
+const TIP_WAIT = '正在读取本机存储明细…（读全后会自动更新并复制）';
 const TIP_OK = '诊断信息已复制到剪贴板，直接粘贴发给开发者即可。\n（下方内容可再核对）';
+const TIP_FAIL = '自动复制失败，请点下方【复制】按钮重试，或长按选字手动复制。';
+const TIP_LATE = '明细有更新，弹窗内容已刷新——请点下方【复制】重新复制一次。';
 const DIAG_TITLE = '复制诊断信息';
 const modalAlive = function () {
 try {
@@ -14478,7 +14321,7 @@ localStorage.setItem(SEEN_KEY, String(mx));
 } catch (e) {}
 try { refreshBadge(); } catch (e) {}
 });
-let ctl = null, closed = false, cur = r.text;
+let ctl = null, closed = false, cur = r.text, copied = '';
 const setModalText = function (txt) {
 try {
 const ta = document.getElementById('modal-textarea');
@@ -14487,6 +14330,18 @@ if (ta && !ta.hidden) { ta.value = txt; return; }
 try { if (ctl && ctl.text) ctl.text(txt); } catch (e2) {}
 };
 const setHint = function (s) { if (closed || !modalAlive()) return; if (ctl && ctl.hint) { try { ctl.hint(s); } catch (e) {} } };
+const autoCopy = function (txt, late) {
+if (closed || !txt || txt === copied) return;
+if (!modalAlive()) { closed = true; return; }
+copied = txt;
+try {
+copyText(txt).then(function (ok) {
+if (closed) return;
+diagToast(ok ? '诊断信息已复制，可直接粘贴发给开发者' : '自动复制失败，请点下方【复制】重试');
+setHint(ok ? TIP_OK : (late ? TIP_LATE : TIP_FAIL));
+});
+} catch (e) { setHint(TIP_FAIL); }
+};
 if (window.openModal) {
 ctl = window.openModal(DIAG_TITLE, cur, function () { closed = true; }, {
 noInput: true,
@@ -14502,6 +14357,7 @@ copyText(c ? c.text() : cur).then(function (ok2) {
 const m2 = ok2 ? TIP_OK : '复制失败，请长按选字手动复制。';
 if (c && c.hint) c.hint(m2);
 diagToast(ok2 ? '已复制到剪贴板' : '复制失败，请长按选字手动复制');
+if (ok2) copied = cur;
 });
 }
 },
@@ -14516,14 +14372,15 @@ diagToast(okDl ? '已开始下载 txt 文件' : '当前内核不支持下载，�
 }
 });
 }
-if (r.allDone) { /* 首屏即终态，正文已是完整诊断，无需额外动作 */ }
+if (r.allDone) autoCopy(cur, false);
 else if (r.onUpdate) {
 r.onUpdate(function (txt, done2) {
 cur = txt;
 if (closed) return;
 if (!modalAlive()) { closed = true; return; }
 setModalText(txt);
-if (!done2) setHint(TIP_WAIT);
+if (done2) autoCopy(txt, copied !== '');
+else setHint(TIP_WAIT);
 });
 }
 });
@@ -20761,17 +20618,6 @@ store.set('quote-history', JSON.stringify(list));
 } catch (e) {}
 }
 renderQuoteOfDay();
-function relCat() {
-const v = store.get('rel-cat');
-return v === 'family' || v === 'friend' ? v : 'love';
-}
-function relRole() {
-return (store.get('rel-role') || '').trim();
-}
-function relLabel() {
-const c = relCat();
-return c === 'family' ? '亲情纪念日' : c === 'friend' ? '友情纪念日' : '恋爱纪念日';
-}
 function updateLove() {
 const start = store.get('love-start');
 const daysEl = document.getElementById('love-days');
@@ -20779,27 +20625,22 @@ const dateEl = document.getElementById('love-date');
 const mDays = document.getElementById('mem-love-days');
 const mDate = document.getElementById('mem-love-date');
 const mNext = document.getElementById('mem-next');
-const label = relLabel();
 if (!start) {
 if (daysEl) daysEl.textContent = '';
 if (dateEl) dateEl.textContent = '';
 if (mDays) mDays.textContent = '—';
 if (mDate) mDate.textContent = '';
-if (mNext) mNext.textContent = '请先设置' + label;
+if (mNext) mNext.textContent = '请先设置恋爱纪念日';
 return;
 }
 const d = new Date(start + 'T00:00:00');
 if (isNaN(d.getTime())) return;
 const days = Math.max(1, Math.floor((new Date() - d) / 864e5));
 const fmt = start.split('-').join('.');
-const role = relRole();
-const who = role ? '和' + role : '我们';
-const tog = relCat() === 'love' ? '在一起' : '相识';
-const base = fmt + ' 起 · ' + who + tog;
 if (daysEl) daysEl.textContent = days + ' 天';
-if (dateEl) dateEl.textContent = base;
+if (dateEl) dateEl.textContent = fmt + ' 起 · 我们在一起';
 if (mDays) mDays.textContent = days;
-if (mDate) mDate.textContent = base;
+if (mDate) mDate.textContent = fmt + ' 起 · 我们在一起';
 const now = new Date();
 const ann = new Date(now.getFullYear(), d.getMonth(), d.getDate());
 if (ann.getTime() < now.getTime()) ann.setFullYear(ann.getFullYear() + 1);
@@ -20833,53 +20674,6 @@ updateLove();
 }
 });
 }
-const REL_ICONS = {
-love: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7.5-4.7-9.3-9A5.3 5.3 0 0112 6.4a5.3 5.3 0 019.3 5.6c-1.8 4.3-9.3 9-9.3 9z"/></svg>',
-family: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg>',
-friend: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>'
-};
-function renderDeskRelIcon() {
-const el = document.getElementById('deco-heart');
-if (el) el.innerHTML = REL_ICONS[relCat()] || REL_ICONS.love;
-}
-function syncRelUI() {
-const labelEl = document.getElementById('mem-love-label');
-if (labelEl) labelEl.textContent = relLabel();
-const row = document.getElementById('rel-type-row');
-if (row) {
-row.querySelectorAll('.mem-type-pill').forEach(b => {
-b.classList.toggle('sel', b.getAttribute('data-rel') === relCat());
-});
-}
-const roleInput = document.getElementById('rel-role-input');
-if (roleInput && roleInput.value !== (store.get('rel-role') || '')) roleInput.value = store.get('rel-role') || '';
-renderDeskRelIcon();
-}
-const relRow = document.getElementById('rel-type-row');
-if (relRow) {
-relRow.addEventListener('click', (e) => {
-const b = e.target.closest('.mem-type-pill');
-if (!b) return;
-store.set('rel-cat', b.getAttribute('data-rel'));
-syncRelUI();
-updateLove();
-renderDeskAnniv();
-});
-}
-const roleInput = document.getElementById('rel-role-input');
-if (roleInput) {
-let roleTimer = null;
-const saveRole = () => {
-store.set('rel-role', (roleInput.value || '').trim());
-updateLove();
-};
-roleInput.addEventListener('change', saveRole);
-roleInput.addEventListener('input', () => {
-clearTimeout(roleTimer);
-roleTimer = setTimeout(saveRole, 400);
-});
-}
-syncRelUI();
 function getExtras() {
 try { return JSON.parse(store.get('mem-extras') || '[]'); } catch (e) { return []; }
 }
@@ -21873,7 +21667,7 @@ const d = new Date(start + 'T00:00:00');
 if (!isNaN(d.getTime())) {
 let ann = new Date(now.getFullYear(), d.getMonth(), d.getDate());
 if (ann.getTime() < now.getTime()) ann.setFullYear(ann.getFullYear() + 1);
-cands.push({ name: relLabel(), date: ann });
+cands.push({ name: '恋爱纪念日', date: ann });
 }
 }
 try {
@@ -21939,7 +21733,6 @@ if (cnt) cnt.textContent = String(dayVal('fish-total'));
 } catch (e) {}
 try { updateFishDays(); } catch (e) {}
 try { updateLove(); } catch (e) {}
-try { syncRelUI(); } catch (e) {}
 try { renderQuoteOfDay(); } catch (e) {}
 try { renderExtras(); } catch (e) {}
 try { renderDeskWidgets(); } catch (e) {}
@@ -29041,12 +28834,9 @@ return parts;
 }
 const SEND_GUARD_MS = 2500;
 let lastSendTxt = '', lastSendTs = 0;
-let lastUserEditAt = 0, clearAppliedAt = 0;
-function userEditedAfterClear() { return lastUserEditAt > clearAppliedAt; }
 function clearChatInput() {
 if (!input) return;
 input._mClearTxt = lastSendTxt || '';
-clearAppliedAt = Date.now();
 const sentTxt = lastSendTxt || '';
 try {
 if (input.isContentEditable && document.activeElement === input) {
@@ -29068,7 +28858,7 @@ setTimeout(() => {
 try {
 if (!input || !input.isContentEditable) return;
 const now = (input.innerText || '').trim();
-if (now && now === sentTxt && Date.now() - lastSendTs < SEND_GUARD_MS && !userEditedAfterClear()) {
+if (now && now === sentTxt && Date.now() - lastSendTs < SEND_GUARD_MS) {
 input.textContent = '';
 input._mClearTxt = '';
 }
@@ -29079,7 +28869,7 @@ input._mClearTxt = '';
 }
 const addMsg = (text) => {
 const t0 = (text || '').trim();
-if (t0 && t0 === lastSendTxt && Date.now() - lastSendTs < SEND_GUARD_MS && !userEditedAfterClear()) {
+if (t0 && t0 === lastSendTxt && Date.now() - lastSendTs < SEND_GUARD_MS) {
 clearChatInput();
 draftImgs = [];
 renderDraft();
@@ -29110,18 +28900,10 @@ scheduleReply();
 };
 if (send) send.addEventListener('click', () => addMsg(input.innerText));
 if (input) {
-try {
-input.addEventListener('keydown', () => { lastUserEditAt = Date.now(); }, true);
-input.addEventListener('compositionstart', () => { lastUserEditAt = Date.now(); }, true);
-input.addEventListener('beforeinput', (e) => {
-if (!e || typeof e.inputType !== 'string' || e.inputType.indexOf('insert') === 0) lastUserEditAt = Date.now();
-}, true);
-} catch (e) {}
 input.addEventListener('input', () => {
 if (!input._mClearTxt) return;
 const now = input.innerText.trim();
 if (now === input._mClearTxt && Date.now() - lastSendTs < SEND_GUARD_MS) {
-if (userEditedAfterClear()) { input._mClearTxt = ''; return; }
 input.textContent = '';
 input._mClearTxt = '';
 } else if (now && now !== input._mClearTxt) {
@@ -29211,48 +28993,9 @@ const gcContinueBtn = document.getElementById('gc-continue-btn');
 const gcBatchBtn = document.getElementById('gc-batch-btn');
 const gcDraftBar = document.getElementById('gc-draft');
 const gcDraftItems = document.getElementById('gc-draft-items');
-const groupsPanel = document.getElementById('gc-groups-panel');
-const gpBody = document.getElementById('gc-gp-body');
-const gpClose = document.getElementById('gc-gp-close');
-const gpickPanel = document.getElementById('gc-gpick-panel');
-const gpickTitle = document.getElementById('gc-gpick-title');
-const gpickBody = document.getElementById('gc-gpick-body');
-const gpickCancel = document.getElementById('gc-gpick-cancel');
-const gpickOkBtn = document.getElementById('gc-gpick-ok');
-const gpickClose = document.getElementById('gc-gpick-close');
 const FALLBACK_REPLIES = ['好的～', '嗯嗯', '收到', '哈哈', '在的', '我知道啦', '是吗', '然后呢', '有意思', '同意', '哈哈哈', '对的', '没错', '我也觉得', '确实', '哇'];
 let msgs = [];
 const RENDER_MAX = 200;
-let groups = [];
-let curGid = 'default';
-function gcGroupsStore() { return window.xyStore(G); }
-function loadGroups() {
-const def = { id: 'default', name: '群聊', members: null, ts: 0 };
-groups = [def];
-try {
-const v = gcGroupsStore().get('gc-groups');
-if (v) {
-const a = JSON.parse(v);
-if (Array.isArray(a)) a.forEach(g => { if (g && g.id && g.id !== 'default') groups.push(g); });
-}
-} catch (e) {}
-try {
-const c = gcGroupsStore().get('gc-cur-gid');
-if (c && groups.some(g => g.id === c)) curGid = c;
-} catch (e) {}
-}
-function saveGroups() { try { gcGroupsStore().set('gc-groups', JSON.stringify(groups)); } catch (e) {} }
-function saveCurGid() { try { gcGroupsStore().set('gc-cur-gid', curGid); } catch (e) {} }
-function currentGroup() { return groups.find(g => g.id === curGid) || groups[0]; }
-function groupMsgKey(gid) { return gid === 'default' ? MSG_KEY : G + ':gc-msgs-' + gid; }
-function groupMemberList(g) {
-let all = [];
-try { all = window.getContacts() || []; } catch (e) {}
-if (!g || !g.members) return all; // default 群：全部现有联系人（动态跟随）
-const set = {}; g.members.forEach(id => { set[id] = 1; });
-return all.filter(c => set[c.id]);
-}
-loadGroups();
 const gcProfiles = {};
 function gcProfileStore() { try { return window.xyStore(G); } catch (e) { return null; } }
 function gcProfileLoad() {
@@ -29465,7 +29208,7 @@ new MutationObserver(() => { try { applyGcBeauty(); } catch (e) {} })
 .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 } catch (e) {}
 function getMembers() {
-return groupMemberList(currentGroup());
+try { return window.getContacts() || [{ id: 'default', name: '默认' }]; } catch (e) { return [{ id: 'default', name: '默认' }]; }
 }
 function memberName(cid) {
 try { const p = gcProfileGet(cid); if (p.name) return p.name; } catch (e) {}
@@ -29534,9 +29277,8 @@ if (run) { try { run(); gLastPersistAt = performance.now(); } catch (e) {} }
 }
 function gcWriteMsgs() {
 const data = JSON.stringify(msgs);
-const key = groupMsgKey(curGid);
-try { localStorage.setItem(key, data); } catch (e) {}
-try { if (window.idbSet) window.idbSet(key, data); } catch (e) {}
+try { localStorage.setItem(MSG_KEY, data); } catch (e) {}
+try { if (window.idbSet) window.idbSet(MSG_KEY, data); } catch (e) {}
 }
 function saveMsgs() {
 gSchedulePersist(gcWriteMsgs);
@@ -29548,12 +29290,11 @@ gcWriteMsgs();
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') gFlushPersistNow(); });
 window.addEventListener('beforeunload', () => gFlushPersistNow());
 function loadMsgs() {
-const key = groupMsgKey(curGid);
-try { msgs = JSON.parse(localStorage.getItem(key) || '[]'); } catch (e) { msgs = []; }
+try { msgs = JSON.parse(localStorage.getItem(MSG_KEY) || '[]'); } catch (e) { msgs = []; }
 if (!Array.isArray(msgs)) msgs = [];
 try {
 if (window.idbGet) {
-window.idbGet(key).then(v => {
+window.idbGet(MSG_KEY).then(v => {
 if (v === undefined || v === null) return;
 try { const a = JSON.parse(v); if (Array.isArray(a) && a.length >= msgs.length) { msgs = a; renderAll(); } } catch (e) {}
 }).catch(() => {});
@@ -30123,15 +29864,12 @@ setTimeout(() => memberReply(cid, userText), i * (1200 + Math.random() * 1600));
 });
 }
 function updateGroupName() {
-const g = currentGroup();
 const n = getMembers().length;
-const nm = (g && g.name) ? g.name : '群聊';
-if (nameEl) nameEl.textContent = nm + '(' + n + ')';
+if (nameEl) nameEl.textContent = '群聊(' + n + ')';
 }
 function enterGroupChat() {
 const editing = Array.from(document.querySelectorAll('.app-grid')).some(g => g.classList.contains('editing'));
 if (editing) return;
-loadGroups(); // 进群前先取回群聊分组（可能在其他会话新建/删除过）
 document.querySelectorAll('.page').forEach(p => p.hidden = true);
 if (page) page.hidden = false;
 updateGroupName();
@@ -30156,7 +29894,6 @@ addMsg(input.innerText);
 function renderMembersPanel() {
 if (!membersBody) return;
 membersBody.innerHTML = '';
-const isCustom = curGid !== 'default';
 const meRow = document.createElement('div');
 meRow.className = 'gc-mp-item';
 const meDesk = deskMeName();
@@ -30169,202 +29906,13 @@ const row = document.createElement('div');
 row.className = 'gc-mp-item';
 const desk = deskPartnerName(m.id);
 row.innerHTML = '<div class="gc-mp-av"></div><span class="gc-mp-name">' + escapeHtml(memberName(m.id)) +
-'<span class="gc-mp-sub">' + (desk ? '桌面昵称：' + escapeHtml(desk) : '') + '</span></span>' +
-(isCustom ? '<button class="gc-set-btn ghost gc-mp-rm">移除</button>' : '');
+'<span class="gc-mp-sub">' + (desk ? '桌面昵称：' + escapeHtml(desk) : '') + '</span></span>';
 fillAv(row.querySelector('.gc-mp-av'), memberAvatar(m.id));
-const rmBtn = row.querySelector('.gc-mp-rm');
-if (rmBtn) rmBtn.addEventListener('click', (e) => {
-e.stopPropagation();
-removeMemberFromGroup(m.id);
-});
 membersBody.appendChild(row);
 });
-if (isCustom) {
-const addRow = document.createElement('div');
-addRow.className = 'gc-mp-add';
-addRow.innerHTML = '<button class="gc-set-btn">＋ 添加成员</button>';
-addRow.querySelector('button').addEventListener('click', () => { openMemberPicker('add'); });
-membersBody.appendChild(addRow);
 }
-}
-function removeMemberFromGroup(cid) {
-const g = currentGroup();
-if (!g || !g.members) return;
-const name = memberName(cid);
-if (!window.openModal) { removeFromGroupNow(cid); return; }
-window.openModal('移除成员「' + name + '」？', '', () => { removeFromGroupNow(cid); },
-{ noInput: true, staticText: '该成员将不再参与本群聊的回复与 @ 提及（其桌面数据不受影响）' });
-}
-function removeFromGroupNow(cid) {
-const g = currentGroup();
-if (!g || !g.members) return;
-const i = g.members.indexOf(cid);
-if (i < 0) return;
-g.members.splice(i, 1);
-saveGroups();
-renderMembersPanel();
-refreshGroupViews();
-toast('已移除成员');
-}
-if (nameEl) nameEl.addEventListener('click', () => { renderGroupsPanel(); if (groupsPanel) groupsPanel.hidden = false; });
+if (nameEl) nameEl.addEventListener('click', () => { renderMembersPanel(); if (membersPanel) membersPanel.hidden = false; });
 if (membersClose) membersClose.addEventListener('click', () => { if (membersPanel) membersPanel.hidden = true; });
-function renderGroupsPanel() {
-if (!gpBody) return;
-gpBody.innerHTML = '';
-groups.forEach(g => {
-const row = document.createElement('div');
-row.className = 'gc-mp-item gc-gp-item' + (g.id === curGid ? ' cur' : '');
-const n = groupMemberList(g).length;
-row.innerHTML =
-'<div class="gc-mp-av gc-gp-ico">' +
-(g.id === 'default'
-? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>'
-: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.4 3.8 5.5 3.8 9S14.5 18.6 12 21c-2.5-2.4-3.8-5.5-3.8-9S9.5 5.4 12 3z"/></svg>') +
-'</div>' +
-'<span class="gc-mp-name">' + escapeHtml(g.name) +
-'<span class="gc-mp-sub">成员 ' + n + ' 人' + (g.id === 'default' ? ' · 全部联系人' : '') + '</span></span>' +
-(g.id === curGid ? '<span class="gc-mp-tag gc-gp-cur">当前</span>' : '') +
-(g.id !== 'default' ? '<button class="gc-set-btn ghost gc-gp-del">删除</button>' : '');
-const delBtn = row.querySelector('.gc-gp-del');
-if (delBtn) delBtn.addEventListener('click', (e) => {
-e.stopPropagation();
-deleteGroup(g.id);
-});
-row.addEventListener('click', () => {
-switchGroup(g.id);
-if (groupsPanel) groupsPanel.hidden = true;
-});
-gpBody.appendChild(row);
-});
-const newRow = document.createElement('div');
-newRow.className = 'gc-mp-item gc-gp-new';
-newRow.innerHTML = '<div class="gc-mp-av gc-gp-ico add">' +
-'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>' +
-'</div><span class="gc-mp-name">新建群聊</span>';
-newRow.addEventListener('click', startCreateGroup);
-gpBody.appendChild(newRow);
-}
-function switchGroup(gid) {
-if (!groups.some(g => g.id === gid)) return;
-if (gid === curGid) { try { if (groupsPanel) groupsPanel.hidden = true; } catch (e) {} return; }
-saveNow();
-curGid = gid;
-saveCurGid();
-msgs = [];
-loadMsgs();
-refreshGroupViews();
-try { renderGroupsPanel(); } catch (e) {}
-}
-function deleteGroup(gid) {
-if (gid === 'default') return;
-const g = groups.find(x => x.id === gid);
-if (!g) return;
-if (!window.openModal) { deleteGroupNow(gid); return; }
-window.openModal('删除群聊「' + g.name + '」？', '', () => { deleteGroupNow(gid); },
-{ noInput: true, staticText: '群聊与其中全部消息将被删除，不可恢复' });
-}
-function deleteGroupNow(gid) {
-if (gid === 'default') return;
-groups = groups.filter(x => x.id !== gid);
-saveGroups();
-try { window.xyStore(G).remove('gc-msgs-' + gid); } catch (e) {} // 内存+LS+IDB 三处清
-if (curGid === gid) {
-curGid = 'default';
-saveCurGid();
-msgs = [];
-loadMsgs();
-}
-refreshGroupViews();
-renderGroupsPanel();
-toast('群聊已删除');
-}
-function startCreateGroup() {
-if (!window.openModal) return;
-window.openModal('群聊名称', '', (v) => {
-const name = String(v || '').trim() || ('群聊 ' + groups.length);
-openMemberPicker('create', name);
-}, { placeholder: '群聊名称（可留空）', maxlength: 20 });
-}
-let gpickMode = 'create';   // 'create' 新建群聊（列全部联系人）| 'add' 添加成员（列未在群内的联系人）
-let gpickGroupName = '';
-function openMemberPicker(mode, groupName) {
-gpickMode = mode;
-gpickGroupName = groupName || '';
-renderMemberPicker();
-if (gpickPanel) gpickPanel.hidden = false;
-}
-function renderMemberPicker() {
-if (!gpickBody) return;
-if (gpickTitle) gpickTitle.textContent = gpickMode === 'create' ? '新建群聊' : '添加成员';
-let all = [];
-try { all = window.getContacts() || []; } catch (e) {}
-let opts = all;
-if (gpickMode === 'add') {
-const g = currentGroup();
-const inGroup = {};
-if (g && g.members) g.members.forEach(id => { inGroup[id] = 1; });
-opts = all.filter(c => !inGroup[c.id]);
-}
-gpickBody.innerHTML = '';
-if (!opts.length) {
-const empty = document.createElement('div');
-empty.className = 'gc-gpick-empty';
-empty.textContent = gpickMode === 'create' ? '还没有可选的桌面联系人' : '所有联系人都已在本群';
-gpickBody.appendChild(empty);
-}
-opts.forEach(c => {
-const row = document.createElement('label');
-row.className = 'gc-mp-item gc-gpick-item';
-row.dataset.cid = c.id;
-const cb = document.createElement('input');
-cb.type = 'checkbox';
-const av = document.createElement('div');
-av.className = 'gc-mp-av';
-fillAv(av, memberAvatar(c.id));
-const name = document.createElement('span');
-name.className = 'gc-mp-name';
-name.innerHTML = escapeHtml(memberName(c.id)) +
-'<span class="gc-mp-sub">' + escapeHtml(c.name || '') + '</span>';
-row.appendChild(cb); row.appendChild(av); row.appendChild(name);
-gpickBody.appendChild(row);
-});
-}
-function gpickConfirm() {
-const checked = [];
-gpickBody.querySelectorAll('.gc-gpick-item input[type="checkbox"]:checked').forEach(cb => {
-const row = cb.closest('.gc-gpick-item');
-if (row && row.dataset.cid) checked.push(row.dataset.cid);
-});
-if (!checked.length) { toast(gpickMode === 'create' ? '请至少选择一名成员' : '请勾选要添加的成员'); return; }
-if (gpickMode === 'create') {
-const g = {
-id: 'g' + Date.now().toString(36) + Math.floor(Math.random() * 1e4).toString(36),
-name: gpickGroupName || ('群聊 ' + groups.length),
-members: checked,
-ts: Date.now()
-};
-groups.push(g);
-saveGroups();
-if (gpickPanel) gpickPanel.hidden = true;
-switchGroup(g.id);
-toast('群聊已创建');
-} else {
-const g = currentGroup();
-if (!g || !g.members) return;
-checked.forEach(id => { if (g.members.indexOf(id) < 0) g.members.push(id); });
-saveGroups();
-if (gpickPanel) gpickPanel.hidden = true;
-renderMembersPanel();
-refreshGroupViews();
-toast('已添加 ' + checked.length + ' 名成员');
-}
-}
-if (gpickCancel) gpickCancel.addEventListener('click', () => { if (gpickPanel) gpickPanel.hidden = true; });
-if (gpickClose) gpickClose.addEventListener('click', () => { if (gpickPanel) gpickPanel.hidden = true; });
-if (gpickOkBtn) gpickOkBtn.addEventListener('click', gpickConfirm);
-if (gpClose) gpClose.addEventListener('click', () => { if (groupsPanel) groupsPanel.hidden = true; });
-if (groupsPanel) groupsPanel.addEventListener('click', (e) => { if (e.target === groupsPanel) groupsPanel.hidden = true; });
-if (gpickPanel) gpickPanel.addEventListener('click', (e) => { if (e.target === gpickPanel) gpickPanel.hidden = true; });
 const moreBtn = document.getElementById('gc-more-btn');
 const moreMenu = document.getElementById('gc-more-menu');
 function showMoreMenu(v) { if (moreMenu) moreMenu.hidden = !v; }
@@ -30384,12 +29932,6 @@ if (moreSettings) moreSettings.addEventListener('click', () => {
 showMoreMenu(false);
 renderSettingsPanel();
 if (settingsPanel) settingsPanel.hidden = false;
-});
-const moreGroups = document.getElementById('gc-more-groups');
-if (moreGroups) moreGroups.addEventListener('click', () => {
-showMoreMenu(false);
-renderGroupsPanel();
-if (groupsPanel) groupsPanel.hidden = false;
 });
 const settingsPanel = document.getElementById('gc-settings-panel');
 const settingsBody = document.getElementById('gc-set-body');
@@ -31011,16 +30553,9 @@ try { hideTyping(); } catch (e) {}
 updateGroupName();
 renderAll();
 try { if (settingsPanel && !settingsPanel.hidden) renderSettingsPanel(); } catch (e) {}
-try { if (groupsPanel && !groupsPanel.hidden) renderGroupsPanel(); } catch (e) {}
 });
 window.groupChatGetMsgs = function () { return msgs.slice(); };
 window.groupChatClear = function () { msgs = []; saveNow(); renderAll(); };
-window.groupChatGetGroups = function () {
-try { return JSON.parse(JSON.stringify(groups)); } catch (e) { return []; }
-};
-window.groupChatGetCurGroup = function () {
-try { const g = currentGroup(); return g ? JSON.parse(JSON.stringify(g)) : null; } catch (e) { return null; }
-};
 window.groupChatProfileGet = function (key) { try { return JSON.parse(JSON.stringify(gcProfileGet(key))); } catch (e) { return {}; } };
 window.groupChatProfileSet = function (key, name, avatar) { gcProfileSet(key, name, avatar); };
 window.groupChatBeautyGet = function (k) { return gcBeautyGet(k); };
@@ -33491,8 +33026,7 @@ res('字卡/回复/收藏明细：LS ' + lsCc.length + '键 ' + fmt(lsCcSum) + '
 };
 })();
 } catch (__e) { try { console.error("[JS] chatcard.js", __e && __e.message || __e); } catch (x) {} if (window.__jsErrors) window.__jsErrors.push(String(__e && __e.message || __e)); } })();
-</script>
-<script>(function () { try {
+(function () { try {
 (function () {
 const uid = window.activePrefix();
 const store = window.activeStore();
@@ -34779,7 +34313,8 @@ document.addEventListener('contact-switched', syncHts);
 }
 })();
 } catch (__e) { try { console.error("[JS] chat-settings.js", __e && __e.message || __e); } catch (x) {} if (window.__jsErrors) window.__jsErrors.push(String(__e && __e.message || __e)); } })();
-(function () { try {
+</script>
+<script>(function () { try {
 (function () {
 const uid = window.activePrefix();
 const ls = window.activeStore();
@@ -38549,10 +38084,6 @@ try { fr.readAsDataURL(blob); } catch (e) { resolve(''); }
 }
 function playLocal(m, v) {
 if (currentId !== m.id) return;
-if (!(v instanceof Blob) && !validAudioSrc(v)) {
-toast('播放失败：音频数据无效'); wantPlay = false; clearBgResume(); currentId = null; updatePlayerBar(); renderLibrary();
-return;
-}
 let failoverUsed = false; // 防止 blob:↔dataURL 之间无限切换
 function startWithSrc(src, isBlob) {
 if (currentId !== m.id) return;
@@ -38612,17 +38143,6 @@ return a;
 function validAudioSrc(v) {
 return typeof v === 'string' &&
 (/^https?:\/\//i.test(v) || /^blob:/i.test(v) || /^data:/i.test(v));
-}
-function plausibleLocalValue(v) {
-if (v instanceof Blob) return true;
-if (typeof v === 'string') return v.length >= 10;
-return false;
-}
-function purgeLocalFile(m) {
-try { if (localBlobCache) delete localBlobCache[m.id]; } catch (e) {}
-try { store.remove('music-file:' + m.id); } catch (e) {} // 内存缓存+LS+IDB(default 前缀)
-try { localStorage.removeItem('xy-home-v2:music-file:' + m.id); } catch (e) {} // 旧 uid 前缀
-try { if (window.idbDelete) window.idbDelete('xy-home-v2:music-file:' + m.id); } catch (e) {}
 }
 function teardownAudio() {
 if (audio) { killAudioEl(audio); audio = null; }
@@ -39079,27 +38599,21 @@ if (m.source === 'local' || (!m.url && m.source !== 'url')) {
 const key = MUSIC_PREFIX + ':music-file:' + m.id;
 const loadLocal = (v) => {
 if (currentId !== m.id) return;
-if (plausibleLocalValue(v)) {
-playLocal(m, v);
-return;
-}
-if (v !== undefined && v !== null && v !== '') purgeLocalFile(m);
+if (!v) {
 const idx = seedIdxOf(m);
 if (idx >= 0) {
 playDemoFor(m, idx);
 return;
 }
-toast('音乐文件加载失败，可能已被清理'); wantPlay = false; clearBgResume(); currentId = null; updatePlayerBar(); renderLibrary();
+toast('音乐文件加载失败，可能已被清理'); wantPlay = false; clearBgResume(); currentId = null; updatePlayerBar(); renderLibrary(); return;
+}
+playLocal(m, v);
 };
 {
 const cached = localBlobCache[m.id];
 if (cached) { loadLocal(cached); return; }
 const lsSync = store.get('music-file:' + m.id);
-if (lsSync && !plausibleLocalValue(lsSync)) {
-try { localStorage.removeItem(MUSIC_PREFIX + ':music-file:' + m.id); } catch (e) {}
-try { localStorage.removeItem('xy-home-v2:music-file:' + m.id); } catch (e) {}
-}
-if (plausibleLocalValue(lsSync)) { localBlobCache[m.id] = lsSync; loadLocal(lsSync); return; }
+if (lsSync) { localBlobCache[m.id] = lsSync; loadLocal(lsSync); return; }
 }
 if (window.idbGet) {
 window.idbGet(key).then(v => {
@@ -40503,8 +40017,7 @@ try { syncTaFavTab(); renderTaFavList(); } catch (e) {}
 });
 })();
 } catch (__e) { try { console.error("[JS] music-player.js", __e && __e.message || __e); } catch (x) {} if (window.__jsErrors) window.__jsErrors.push(String(__e && __e.message || __e)); } })();
-</script>
-<script>(function () { try {
+(function () { try {
 (function () {
 const uid = window.activePrefix();
 const store = window.activeStore();
@@ -41730,7 +41243,8 @@ window.divineCopyResultText = copyResultText;
 window.divineSendResult = function (m, cards, summary, question) { sendToChat(m, cards, summary, question); };
 })();
 } catch (__e) { try { console.error("[JS] divination.js", __e && __e.message || __e); } catch (x) {} if (window.__jsErrors) window.__jsErrors.push(String(__e && __e.message || __e)); } })();
-(function () { try {
+</script>
+<script>(function () { try {
 (function () {
 const uid = window.activePrefix();
 const store = window.activeStore();
@@ -48984,8 +48498,7 @@ scheduleCallCheck();
 }, (45 + Math.random() * 75) * 1000);
 })();
 } catch (__e) { try { console.error("[JS] call.js", __e && __e.message || __e); } catch (x) {} if (window.__jsErrors) window.__jsErrors.push(String(__e && __e.message || __e)); } })();
-</script>
-<script>(function () { try {
+(function () { try {
 (function () {
 const store = window.activeStore();
 const KEY = 'mail-letters';
@@ -49587,16 +49100,16 @@ if (d) { parts.push(d); continue; }
 }
 parts.push(words[Math.floor(Math.random() * words.length)]);
 }
-let t = parts.join(' ');
+let t = parts.join('\n');
 const kp = pool.kaomoji.length ? pool.kaomoji : pool.defKaomoji;
 const ep = pool.emoji.length ? pool.emoji : pool.defEmoji;
-if (cfg.kaomojiEn && kp.length && Math.random() * 100 < 30) t += ' ' + kp[Math.floor(Math.random() * kp.length)];
-if (cfg.emojiEn && ep.length && Math.random() * 100 < 15) t += ' ' + ep[Math.floor(Math.random() * ep.length)];
+if (cfg.kaomojiEn && kp.length && Math.random() * 100 < 30) t += '\n' + kp[Math.floor(Math.random() * kp.length)];
+if (cfg.emojiEn && ep.length && Math.random() * 100 < 15) t += '\n' + ep[Math.floor(Math.random() * ep.length)];
 const st = pool.sticker.concat(pool.image).filter(s => typeof s === 'string' && s.indexOf('data:') === 0);
 if (cfg.stickerEn && st.length && Math.random() * 100 < 20) {
 const orig = st[Math.floor(Math.random() * st.length)];
 const small = (window._shrunkStickerCache && window._shrunkStickerCache[orig]) || orig;
-t += ' ' + small;
+t += '\n' + small;
 }
 return t;
 }
@@ -50095,7 +49608,8 @@ updateBadge();
 });
 })();
 } catch (__e) { try { console.error("[JS] mail.js", __e && __e.message || __e); } catch (x) {} if (window.__jsErrors) window.__jsErrors.push(String(__e && __e.message || __e)); } })();
-(function () { try {
+</script>
+<script>(function () { try {
 (function () {
 const uid = 'xy-home-v2';
 const store = window.xyStore(uid);
@@ -57731,8 +57245,7 @@ memoSendBtn.textContent = '完成发到聊天：' + (on ? '开' : '关');
 document.addEventListener('contact-switched', () => { if (!memoPage.hidden) memoRender(); });
 })();
 } catch (__e) { try { console.error("[JS] memo-app.js", __e && __e.message || __e); } catch (x) {} if (window.__jsErrors) window.__jsErrors.push(String(__e && __e.message || __e)); } })();
-</script>
-<script>(function () { try {
+(function () { try {
 (function () {
 const GNS = 'xy-home-v2';
 const page = document.getElementById('page-memo-arc');
@@ -59520,7 +59033,8 @@ if (document.readyState === 'loading') document.addEventListener('DOMContentLoad
 else boot();
 })();
 } catch (__e) { try { console.error("[JS] my-arc.js", __e && __e.message || __e); } catch (x) {} if (window.__jsErrors) window.__jsErrors.push(String(__e && __e.message || __e)); } })();
-(function () { try {
+</script>
+<script>(function () { try {
 (function () {
 var G = 'xy-home-v2';
 var store = window.xyStore(G);
@@ -62734,22 +62248,19 @@ if (!data.recipes) data.recipes = {};
 var h = '<div class="garden-craft-title">\uD83D\uDC83 \u82B1\u827A\u914D\u65B9</div><div class="garden-craft-list">';
 RECIPES.forEach(function (r) {
 var canMake = true;
-var needTxt = [], lackTxt = [];
+var needTxt = [];
 Object.keys(r.need).forEach(function (k) {
 var have = data.inv[k] || 0;
-var need = r.need[k];
-if (have < need) { canMake = false; lackTxt.push((T[k] ? T[k].e[T[k].e.length - 1] : "") + "\u00d7" + (need - have)); }
+if (have < r.need[k]) canMake = false;
 var tp = T[k];
-needTxt.push('<span class="rq' + (have < need ? " short" : "") + '">' + (tp ? tp.e[tp.e.length - 1] : "") + " " + have + "/" + need + '</span>');
+needTxt.push((tp ? tp.e[tp.e.length - 1] : "") + "\u00d7" + r.need[k]);
 });
 var made = !!data.recipes[r.id];
 h += '<div class="garden-recipe' + (canMake ? " can" : "") + (made ? " made" : "") + '">';
 h += '<div class="recipe-head"><span class="recipe-emoji">' + r.e + '</span><span class="recipe-name">' + r.n + '</span>' + (made ? '<span class="recipe-made">\u2713\u5DF2\u5408\u6210</span>' : "") + '</div>';
 h += '<div class="recipe-need">' + needTxt.join(" ") + '</div>';
-if (!canMake && lackTxt.length) h += '<div class="recipe-lack">\u6750\u6599\u4E0D\u8DB3\uFF0C\u8FD8\u7F3A ' + lackTxt.join("\u3001") + '\uFF08\u5728\u82B1\u56ED\u79CD\u4E0B\u5E76\u6536\u83B7\u540E\u53EF\u5408\u6210\uFF09</div>';
 h += '<div class="recipe-wish">' + r.wish + '</div>';
 if (canMake) h += '<button class="recipe-btn" data-recipe="' + r.id + '">\u5408\u6210\u82B1\u675F</button>';
-else h += '<button class="recipe-btn" disabled>\u6750\u6599\u4E0D\u8DB3</button>';
 h += '</div>';
 });
 h += '</div>';
@@ -68581,8 +68092,7 @@ fast: false
 };
 })();
 } catch (__e) { try { console.error("[JS] connect-four.js", __e && __e.message || __e); } catch (x) {} if (window.__jsErrors) window.__jsErrors.push(String(__e && __e.message || __e)); } })();
-</script>
-<script>(function () { try {
+(function () { try {
 (function () {
 const panel = document.getElementById('chat-ms-panel');
 if (!panel) return;
@@ -70948,7 +70458,8 @@ if (sp) sp.hidden = false;
 });
 })();
 } catch (__e) { try { console.error("[JS] sfx.js", __e && __e.message || __e); } catch (x) {} if (window.__jsErrors) window.__jsErrors.push(String(__e && __e.message || __e)); } })();
-(function () { try {
+</script>
+<script>(function () { try {
 (function () {
 const uid = window.activePrefix();
 const store = {
@@ -71182,7 +70693,7 @@ let msg;
 if (isFullscreen()) {
 msg = '已进入全屏模式，浏览器工具栏已隐藏。\n\niOS 顶部系统状态栏（时间/电量）由系统控制，任何网页都无法隐藏，这是所有 iPhone 网页的共同限制。';
 } else if (inIosStandalone) {
-msg = '已进入全屏模式。iOS 的系统状态栏（时间/电量）由系统控制，任何网页都无法隐藏，这是所有 iPhone 应用的共同限制。\n\n应用内的模拟状态栏（Mochi/时间/电量）已下移到系统状态栏正下方、两栏不重叠，内容顶满屏幕、屏幕利用更满。';
+msg = '已进入全屏模式。iOS 的系统状态栏（时间/电量）由系统控制，任何网页都无法隐藏，这是所有 iPhone 应用的共同限制。\n\n本开关已隐藏应用内的模拟状态栏，内容顶到系统状态栏下方，屏幕利用更满。';
 } else {
 msg = '当前浏览器未允许本页进入全屏，开关已回滚。\n\niPhone 上想真正隐藏浏览器栏，只有：\n· 【推荐】改用 Safari 打开本站 → 底部「分享」→「添加到主屏幕」→ 点桌面图标打开，即无浏览器栏的独立应用；'
 + (isEdgeIOS ? '\n· Edge 菜单「添加到主屏幕」只会创建快捷方式，打开后仍是带工具栏的网页（就是现在的状态），这条路拿不到全屏。' : '')
@@ -71230,10 +70741,10 @@ const el = document.getElementById('sf-fullscreen');
 if (!el) return;
 const row = el.closest('.gs-row');
 if (!row) return;
-const span = row.querySelector('span span') || row.querySelector('span');
+const span = row.querySelector('span');
 if (!span) return;
 span.textContent = inIosStandalone
-? '全屏模式（内容顶满，系统状态栏不可隐藏）'
+? '全屏模式（隐藏模拟状态栏，系统状态栏不可隐藏）'
 : // v3.26.x：浏览器标签态现在真的去请求原生全屏（不再一律拒绝），文案照实描述；
 '全屏模式（iOS 浏览器全屏，不支持时会弹说明）';
 }
@@ -71298,17 +70809,6 @@ if (t && !t.checked && stillSysFs) showSystemFsNote();
 }
 });
 try { relabelIosToggle(); } catch (e) {}
-}
-const fsHelp = document.getElementById('sf-fullscreen-help');
-if (fsHelp) {
-const openFsHelp = function (e) {
-if (e) { try { e.stopPropagation(); e.preventDefault(); } catch (er) {} }
-showIosGuide();
-};
-fsHelp.addEventListener('click', openFsHelp);
-fsHelp.addEventListener('keydown', function (e) {
-if (e.key === 'Enter' || e.key === ' ') openFsHelp(e);
-});
 }
 function syncFsClass() {
 const d = document.documentElement;
@@ -72003,7 +71503,7 @@ return Math.round(n) + ' B';
 function exportCoverage() {
 const RULES = [
 [/:chat-msgs$/, '聊天记录', arr => arr.length + ' 条'],
-[/:group-chat-msgs$|:gc-msgs-/, '群聊记录', arr => arr.length + ' 条'],
+[/:group-chat-msgs$/, '群聊记录', arr => arr.length + ' 条'],
 [/mail-letters/, '信箱', arr => arr.length + ' 封'],
 [/feed-posts/, '朋友圈', arr => arr.length + ' 条'],
 [/cc-groups/, '字卡库', obj => Object.keys(obj).length + ' 组'],
@@ -72162,7 +71662,7 @@ const mochiKeyTails = [
 'reply-', 'feed-', 'music-', 'emoji-last', 'group-chat-enabled',
 'quote-history', 'memo-', 'mood-history', 'today-mood-',
 'day-fish-', 'day-work-', 'fish-day-add', 'work-day-add',
-'work-total', 'love-start', 'rel-cat', 'rel-role', 'avatar-lib', 'avatar-me-lib',
+'work-total', 'love-start', 'avatar-lib', 'avatar-me-lib',
 'ck-', 'ckq-', 'rps-score', 'desk-countdowns', 'desk-texts',
 'desk-images', 'desk-layout', 'more-tab', 'cal-my-', 'mem-extras',
 'fish-log', 'fish-migrated', 'music-global', 'music-favs', 'music-float-pos',
@@ -74447,23 +73947,9 @@ return el && ((el.tagName === 'INPUT' || el.tagName === 'TEXTAREA')
 : el.isContentEditable === true);
 }
 var nudgeTimer = null;
-function healEditableScroll(el) {
-try {
-if (!el || !(el.scrollTop > 0)) return;
-if (el.scrollHeight <= el.clientHeight + 1) el.scrollTop = 0;
-} catch (e) {}
-}
-try {
-document.addEventListener('input', function (e) {
-var t = e.target;
-if (!isTextEl(t)) return;
-healEditableScroll(t);
-}, true);
-} catch (e) {}
 function nudgeInputVisible() {
 var active = document.activeElement;
 if (!isTextEl(active) || !active.getBoundingClientRect) return;
-healEditableScroll(active);
 var r = active.getBoundingClientRect();
 try {
 var scroller = active.closest('.chat-body, .card-list, .gs-scroll, .tc-body, .mem-scroll, .cal-scroll, .div-scroll, .fav-list, .mail-list, .qa-body, .modal, .chat-ask-body, .poke-card-scroll, .chat-decision-body');
@@ -74834,23 +74320,6 @@ var _aFocusAt = 0, _aProv = false, _aIH = window.innerHeight;
 var _aLastAct = Date.now();
 var _aLastVVH = 0;
 var _aBurstUntil = 0;
-window.__mochiAndroidKb = function () {
-return {
-kbActive: !!_aKb,
-prov: !!_aProv,
-closing: !!_aClosing,
-docLocked: false,
-fullInner: Math.round(_aIH),
-fullVv: Math.round(_aH),
-vvNow: Math.round(_aVV.height),
-offsetTop: Math.round(_aVV.offsetTop || 0),
-burstLeft: Math.max(0, _aBurstUntil - Date.now()),
-focusTag: _aTextFocused ? String(_aTextFocused.tagName || '').toLowerCase() : '',
-watching: !!_aWatch,
-lastActAgo: Date.now() - _aLastAct,
-typosAgo: Date.now() - _aUserTypos
-};
-};
 function _aWinY() {
 try { return window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0; } catch (e) { return 0; }
 }
